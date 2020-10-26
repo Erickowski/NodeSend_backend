@@ -1,7 +1,13 @@
 const Usuario = require("../models/Usuario");
 const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
 
 exports.nuevoUsuario = async (req, res) => {
+  // Mostrar mensajes de error con express validator
+  const errores = validationResult(req);
+  if (!errores.isEmpty()) {
+    return res.status(400).json({ errores: errores.array() });
+  }
   // Verificar si el usuario ya está registrado
   const { email, password } = req.body;
 
@@ -18,7 +24,11 @@ exports.nuevoUsuario = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   usuario.password = await bcrypt.hash(password, salt);
 
-  // Insertarlo en la base de datos
-  await usuario.save();
-  res.json({ msg: "Usuario creado correctamente" });
+  try {
+    // Insertarlo en la base de datos
+    await usuario.save();
+    res.json({ msg: "Usuario creado correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
 };
