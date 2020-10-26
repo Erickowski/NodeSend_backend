@@ -1,8 +1,9 @@
 const Usuario = require("../models/Usuario");
+const bcrypt = require("bcrypt");
 
 exports.nuevoUsuario = async (req, res) => {
   // Verificar si el usuario ya está registrado
-  const { email } = req.body;
+  const { email, password } = req.body;
 
   let usuario = await Usuario.findOne({ email });
 
@@ -10,7 +11,14 @@ exports.nuevoUsuario = async (req, res) => {
     return res.status(400).json({ msg: "El usuario ya está registrado" });
   }
 
-  usuario = await new Usuario(req.body);
-  usuario.save();
+  // Crear un nuevo usuario
+  usuario = new Usuario(req.body);
+
+  // Hashear el password
+  const salt = await bcrypt.genSalt(10);
+  usuario.password = await bcrypt.hash(password, salt);
+
+  // Insertarlo en la base de datos
+  await usuario.save();
   res.json({ msg: "Usuario creado correctamente" });
 };
