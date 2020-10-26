@@ -1,8 +1,16 @@
 const Usuario = require("../models/Usuario");
 
 exports.nuevoUsuario = async (req, res) => {
-  console.log(req.body);
-  const usuario = await new Usuario(req.body);
+  // Verificar si el usuario ya está registrado
+  const { email } = req.body;
+
+  let usuario = await Usuario.findOne({ email });
+
+  if (usuario) {
+    return res.status(400).json({ msg: "El usuario ya está registrado" });
+  }
+
+  usuario = await new Usuario(req.body);
   usuario.save();
   res.json({ msg: "Usuario creado correctamente" });
 };
