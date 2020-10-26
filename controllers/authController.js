@@ -39,18 +39,5 @@ exports.autenticarUsuario = async (req, res, next) => {
 };
 
 exports.usuarioAutenticado = (req, res, next) => {
-  const authHeader = req.get("Authorization");
-
-  if (authHeader) {
-    // Obtener el token
-    const token = authHeader.split(" ")[1];
-    // Comprobamos el JWT
-    const usuario = jwt.verify(token, process.env.SECRETA);
-
-    res.json({usuario});
-  } else {
-    console.log(error);
-    console.log('JWT no válido.');
-  }
-  return next();
+  res.json({ usuario: req.usuario });
 };
