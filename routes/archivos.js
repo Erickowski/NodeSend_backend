@@ -9,7 +9,7 @@ const {
 
 const auth = require("../middleware/auth");
 
-router.post("/", subirArchivo);
+router.post("/", auth, subirArchivo);
 
 router.delete("/:id", eliminarArchivo);
 
