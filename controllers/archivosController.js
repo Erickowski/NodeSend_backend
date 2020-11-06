@@ -1,5 +1,6 @@
 const multer = require("multer");
 const shortid = require("shortid");
+const fs = require("fs");
 
 exports.subirArchivo = async (req, res, next) => {
   const configuracionMulter = {
@@ -34,4 +35,11 @@ exports.subirArchivo = async (req, res, next) => {
   });
 };
 
-exports.eliminarArchivo = (req, res) => {};
+exports.eliminarArchivo = async (req, res) => {
+  try {
+    fs.unlinkSync(__dirname + `/../uploads/${req.archivo}`);
+    console.log("Archivo eliminado.");
+  } catch (error) {
+    console.log(error);
+  }
+};
