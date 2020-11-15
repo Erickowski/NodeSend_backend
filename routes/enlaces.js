@@ -7,6 +7,7 @@ const {
   obtenerEnlace,
   todosEnlaces,
   tienePassword,
+  verificarPassword,
 } = require("../controllers/enlacesController");
 
 const auth = require("../middleware/auth");
@@ -24,5 +25,7 @@ router.post(
 );
 
 router.get("/:url", tienePassword, obtenerEnlace);
+
+router.post("/:url", verificarPassword, obtenerEnlace);
 
 module.exports = router;

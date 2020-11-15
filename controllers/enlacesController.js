@@ -39,7 +39,6 @@ exports.nuevoEnlace = async (req, res, next) => {
   try {
     await enlace.save();
     return res.json({ msg: `${enlace.url}` });
-    next();
   } catch (error) {
     console.log(error);
   }
@@ -67,7 +66,7 @@ exports.tienePassword = async (req, res, next) => {
   }
 
   if (enlace.password) {
-    return res.json({ password: true, enalce: enlace.url });
+    return res.json({ password: true, enlace: enlace.url });
   }
 
   next();
@@ -85,7 +84,24 @@ exports.obtenerEnlace = async (req, res, next) => {
   }
 
   // Si el enlace existe
-  res.json({ archivo: enlace.nombre });
+  res.json({ archivo: enlace.nombre, password: false });
 
   next();
+};
+
+// Verifica si el password es correcto
+exports.verificarPassword = async (req, res, next) => {
+  const { url } = req.params;
+  const { password } = req.body;
+
+  // Consultar por el enlace
+  const enlace = await Enlace.findOne({ url });
+
+  // Verificar el password
+  if (bcrypt.compareSync(password, enlace.password)) {
+    // Permitir al usuario acceder archivo
+    next();
+  } else {
+    return res.status(401).json({ msg: "Password incorrecto" });
+  }
 };
