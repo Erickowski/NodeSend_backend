@@ -7,7 +7,6 @@ const {
   obtenerEnlace,
   todosEnlaces,
 } = require("../controllers/enlacesController");
-const { eliminarArchivo } = require("../controllers/archivosController");
 
 const auth = require("../middleware/auth");
 
@@ -23,6 +22,6 @@ router.post(
   nuevoEnlace
 );
 
-router.get("/:url", obtenerEnlace, eliminarArchivo);
+router.get("/:url", obtenerEnlace);
 
 module.exports = router;
