@@ -21,6 +21,9 @@ app.use(express.json());
 // Puerto de la app
 const PORT = process.env.PORT || 4000;
 
+// Habilitar carpeta publica
+app.use(express.static("uploads"));
+
 // Rutas de la app
 app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/auth", require("./routes/auth"));

@@ -5,10 +5,13 @@ const { check } = require("express-validator");
 const {
   nuevoEnlace,
   obtenerEnlace,
+  todosEnlaces,
 } = require("../controllers/enlacesController");
 const { eliminarArchivo } = require("../controllers/archivosController");
 
 const auth = require("../middleware/auth");
+
+router.get("/", todosEnlaces);
 
 router.post(
   "/",

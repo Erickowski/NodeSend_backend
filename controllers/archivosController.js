@@ -25,7 +25,7 @@ exports.subirArchivo = async (req, res, next) => {
   const upload = multer(configuracionMulter).single("archivo");
 
   upload(req, res, async (error) => {
-    console.log(req.file);
+    // console.log(req.file);
     if (!error) {
       res.json({ archivo: req.file.filename });
     } else {
@@ -42,4 +42,10 @@ exports.eliminarArchivo = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+// Descargando archivo
+exports.descargarArchivo = (req, res) => {
+  const archivo = __dirname + "/../uploads/" + req.params.archivo;
+  res.download(archivo);
 };

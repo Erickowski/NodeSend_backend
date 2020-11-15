@@ -45,6 +45,16 @@ exports.nuevoEnlace = async (req, res, next) => {
   }
 };
 
+// Obtiene un lista de todos los enlaces
+exports.todosEnlaces = async (req, res) => {
+  try {
+    const enlaces = await Enlace.find({}).select("url -_id");
+    res.json({ enlaces });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // Obtener el enlace
 exports.obtenerEnlace = async (req, res, next) => {
   const { url } = req.params;
@@ -58,6 +68,7 @@ exports.obtenerEnlace = async (req, res, next) => {
 
   // Si el enlace existe
   res.json({ archivo: enlace.nombre });
+  return;
 
   // Si las descargas son iguales a 1 - Borrar la entrada y borrar el archivo
   const { descargas, nombre } = enlace;
